@@ -1,0 +1,49 @@
+work_dir=../
+commLib_inc=$(work_dir)/comm_inc
+commLib_libs= $(work_dir)/libs
+commLib_extra_inc=$(commLib_inc)/ext
+APPDIR=$(work_dir)
+sdk=rv1126
+
+ifeq ($(sdk),rv1126)
+CROSS_COMPILE ?= /data/rockchip/RV1126_V2.2.5/buildroot/output/rockchip_rv1126_rv1109_ipc/host/bin/arm-linux-gnueabihf-
+SYSROOT ?= /data/rockchip/RV1126_V2.2.5/buildroot/output/rockchip_rv1126_rv1109_ipc/host/arm-buildroot-linux-gnueabihf/sysroot
+CFLAGS := --sysroot=$(SYSROOT)
+LDFLAGS := --sysroot=$(SYSROOT)
+CFLAGS += -fno-aggressive-loop-optimizations -ffunction-sections -fdata-sections -fstack-protector 
+CFLAGS += -g -O2 -Wall -DLINUX -DUSING_HIP_OS_CONFIG -D_GNU_SOURCE -fPIC -DISP_HW_V20 -DAI_FROM_STREAM0
+#CFLAGS += -g -O2 -Wall -DLINUX -DUSING_HIP_OS_CONFIG -D_GNU_SOURCE -fPIC -DISP_HW_V20
+CFLAGS += -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64 -DUSE_UPDATEENGINE=ON -DSUCCESSFUL_BOOT=ON  -DNDEBUG  -rdynamic
+
+CXXFLAGS := --sysroot=$(SYSROOT)
+CXXFLAGS += -fno-aggressive-loop-optimizations -ffunction-sections -fdata-sections -fstack-protector
+CXXFLAGS +=  -O2 -Wall -DLINUX -DUSING_HIP_OS_CONFIG -D_GNU_SOURCE -fPIC -DISP_HW_V20 -DAI_FROM_STREAM0
+#CXXFLAGS +=  -O2 -Wall -DLINUX -DUSING_HIP_OS_CONFIG -D_GNU_SOURCE -fPIC -DISP_HW_V20
+CXXFLAGS += -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64 -DUSE_UPDATEENGINE=ON -DSUCCESSFUL_BOOT=ON  -DNDEBUG  -rdynamic
+endif
+ifeq ($(sdk),rk356x)
+SYSROOT=/opt/rockchip/prebuilts/gcc/linux-x86/arm/rk356x/host_IPC/aarch64-buildroot-linux-gnu/sysroot
+CROSS_COMPILE :=/opt/rockchip/prebuilts/gcc/linux-x86/arm/rk356x/host_IPC/bin/aarch64-linux-
+CFLAGS := --sysroot=$(SYSROOT)
+LDFLAGS := --sysroot=$(SYSROOT)
+CFLAGS += -fno-aggressive-loop-optimizations -ffunction-sections -fdata-sections -fstack-protector 
+CFLAGS += -g -O2 -Wall -DLINUX -DUSING_HIP_OS_CONFIG -D_GNU_SOURCE -fPIC -DISP_HW_V21
+CFLAGS += -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64 -DUSE_UPDATEENGINE=ON -DSUCCESSFUL_BOOT=ON  -DNDEBUG  -rdynamic
+
+CXXFLAGS := --sysroot=$(SYSROOT)
+CXXFLAGS += -fno-aggressive-loop-optimizations -ffunction-sections -fdata-sections -fstack-protector 
+CXXFLAGS += -g -O2 -Wall -DLINUX -DUSING_HIP_OS_CONFIG -D_GNU_SOURCE -fPIC -DISP_HW_V21
+CXXFLAGS += -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64 -DUSE_UPDATEENGINE=ON -DSUCCESSFUL_BOOT=ON  -DNDEBUG  -rdynamic
+
+endif
+
+#CC = @echo '	CC $@';$(CROSS_COMPILE)gcc
+CC = $(CROSS_COMPILE)gcc
+CXX = $(CROSS_COMPILE)g++
+AR = $(CROSS_COMPILE)ar
+LD = $(CROSS_COMPILE)ld
+RANLIB = $(CROSS_COMPILE)ranlib
+STRIP = $(CROSS_COMPILE)strip
+ARFLAGS = rc
+RM = rm -rfv
+CP = cp -rfv
